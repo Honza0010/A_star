@@ -33,8 +33,8 @@ Astar::Astar(int rows, int columns)
     this->m = rows;
     this->n = columns;
 
-    vector<int> help;           //��dek matice grid (bludi�t�)
-    vector<Cell> cells_help;    //��dek matice grid_cells (pro vkl�d�n� ��dk� bun�k)
+    vector<int> help;           //Raddek matice grid (bludiste)
+    vector<Cell> cells_help;    //Radek matice grid_cells (pro vkladani radku bunek)
     for (int i = 0; i < this->m; i++)
     {
         for (int j = 0; j < this->n; j++)
@@ -115,8 +115,8 @@ void Astar::read_file(string input)
     {
         file >> rows;
         file >> columns;
-        vector<int> help;           //��dek matice grid (bludi�t�)
-        vector<Cell> cells_help;    //��dek matice grid_cells (pro vkl�d�n� ��dk� bun�k)
+        vector<int> help;           //Radek matice grid (bludiste)
+        vector<Cell> cells_help;    //Radek matice grid_cells (pro vkladani radku bunek)
         int help_;
         for (int i = 0; i < rows; i++)
         {
@@ -190,7 +190,7 @@ void Astar::search()
     border.push(grid_cells[start.x][start.y]);
     on_border[start.x][start.y] = true;
 
-    while (!border.empty())  //Dokud nen� hranice pr�zdn�
+    while (!border.empty())  //Dokud neni hranice prazdna
     {
 
         Cell help = border.top();
@@ -209,15 +209,15 @@ void Astar::search()
         border.pop();
         on_border[help.x][help.y] = false;      //Help jsme vyjmuli z hranice
 
-        explored[help.x][help.y] = true;        //Help bude prozkouman� po t�to iteraci
-        if (is_end(help))                        //Kontrola, jestli help nen� c�l
+        explored[help.x][help.y] = true;        //Help bude prozkoumano po teto iteraci
+        if (is_end(help))                        //Kontrola, jestli help nene cil
         {
             has_solution = true;
             this->make_path();
             return;
         }
 
-        for (int i = -1; i <= 1; i++)     //Tyto dva for cykly jsou pro prozkoum�n� v�ech soused� uzlu help
+        for (int i = -1; i <= 1; i++)     //Tyto dva for cykly jsou pro prozkoumani vsech sousedu uzlu help
         {
             for (int j = -1; j <= 1; j++)
             {
@@ -225,27 +225,27 @@ void Astar::search()
                 {
                     continue;
                 }
-                if ((i == 0 && j == 0) || (grid[help.x + i][help.y + j] == 1))   //Pokud jsme v na�em prvku a nebo sousedn� prvek je p�ek��ka
+                if ((i == 0 && j == 0) || (grid[help.x + i][help.y + j] == 1))   //Pokud jsme v nasem prvku a nebo sousedni prvek je prekazka
                 {
                     continue;
                 }
-                if (explored[help.x + i][help.y + j] == true)    //Pokud je ji� prvek na pozici i,j prozkouman�
+                if (explored[help.x + i][help.y + j] == true)    //Pokud je jiz prvek na pozici i,j prozkoumany
                 {
                     continue;
                 }
 
-                int just_g_cost;    //St�vaj�c� g_cost
+                int just_g_cost;    //Stavajici g_cost
  
-                if (i == 0 || j == 0)    //Pokud je sousedn� prvek kolmo od na�eho prvku
+                if (i == 0 || j == 0)    //Pokud je sousedni prvek kolmo od naseho prvku
                 {
                     just_g_cost = grid_cells[help.x][help.y].g_cost + 10;
                 }
-                else        //Pokud je sousedn� prvek na diagon�le
+                else        //Pokud je sousedni prvek na diagonale
                 {
                     just_g_cost = grid_cells[help.x][help.y].g_cost + 14;
                 }
 
-                if (on_border[help.x + i][help.y + j] == false)        //Kontrola, zda je�t� nen� prvek na pozici i,j u� na hranici a nebo je st�vaj�c� g_cost lep��
+                if (on_border[help.x + i][help.y + j] == false)        //Kontrola, zda jeste neni prvek na pozici i,j uz na hranici a nebo je stavajici g_cost lepsi
                 {
                     //border.push(grid_cells[i][j]);
                     grid_cells[help.x + i][help.y + j].parentX = help.x;
@@ -256,7 +256,7 @@ void Astar::search()
                     border.push(grid_cells[help.x + i][help.y + j]);
                     on_border[help.x + i][help.y + j] = true;
                 }
-                else if (just_g_cost < grid_cells[help.x + i][help.y + j].g_cost)      //Kontrola, kter� g_cost je lep��
+                else if (just_g_cost < grid_cells[help.x + i][help.y + j].g_cost)      //Kontrola, ktery g_cost je lepsi
                 {
                     grid_cells[help.x + i][help.y + j].parentX = help.x;
                     grid_cells[help.x + i][help.y + j].parentY = help.y;
@@ -300,7 +300,7 @@ void Astar::make_path()
     }
 
 
-    vector<Cell> path_help; //Vytvo�� cestu od konce do c�le
+    vector<Cell> path_help; //Vytvori cestu od konce do cile
 
     int x = end.x;
     int y = end.y;
@@ -314,7 +314,7 @@ void Astar::make_path()
     }
     path_help.push_back(grid_cells[start.x][start.y]);
 
-    for (int i = path_help.size()-1; i >= 0; i--)
+    for (int i = (int)path_help.size()-1; i >= 0; i--)
     {
         path.push_back(path_help[i]);
     }
